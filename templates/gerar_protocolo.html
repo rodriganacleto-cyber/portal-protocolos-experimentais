@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerar Novo Protocolo - Clubes de Ciência Viva</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #333;
+    line-height: 1.6;
+}
+
+header { 
+    background: linear-gradient(135deg, #004080 0%, #0066cc 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+header img { 
+    height: 70px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.portal-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.portal-title h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.portal-title .subtitle {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+nav { display: flex; gap: 1.5rem; align-items: center; }
+
+nav a { 
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover { 
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.page-header h2 {
+    color: #004080;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.form-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    color: #004080;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+fieldset {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+legend {
+    color: #004080;
+    font-weight: 600;
+    padding: 0 0.5rem;
+    font-size: 1rem;
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.checkbox-label:hover {
+    background: #f8f9fa;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.btn {
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary {
+    background: linear-gradient(135deg, #00a86b 0%, #008f5a 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,168,107,0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #0066cc 0%, #004080 100%);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ff8c00 0%, #e07b00 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.loading-container {
+    display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.loading-container.active { display: block; }
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #0066cc;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.review-card {
+    display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+    border-top: 4px solid #0066cc;
+}
+
+.review-card.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.protocol-preview {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.preview-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.preview-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.preview-section h3 {
+    color: #004080;
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.preview-section h4 {
+    color: #0066cc;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.preview-section p {
+    color: #333;
+    white-space: pre-line;
+    line-height: 1.8;
+}
+
+.security-preview {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.security-preview h4 {
+    color: #d63031 !important;
+}
+
+.alert {
+    display: none;
+    padding: 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.alert.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.feedback-section {
+    display: none;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e9ecef;
+}
+
+.feedback-section.active {
+    display: block;
+}
+
+.feedback-section textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.footer {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.footer p {
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.footer .developer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid #e9ecef;
+}
+
+.footer a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .header-content { flex-direction: column; text-align: center; }
+    .logo-section { flex-direction: column; }
+    .container { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <div class="logo-section">
+            <img src="https://agmlbk1.essmaria.info/images/nicepage-images/cd6b804503262f5647d4992a9c6f0ac82.png" alt="Logo AGML">
+            <div class="portal-title">
+                <h1>Portal Ciência Viva</h1>
+                <span class="subtitle">Protocolos Experimentais</span>
+            </div>
+        </div>
+        <nav>
+            <a href="{{ url_for('index') }}">🏠 Início</a>
+            <a href="{{ url_for('consultar') }}">📚 Consultar</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="page-header">
+        <h2>✨ Gerar Novo Protocolo</h2>
+        <p>Preenche o formulário e a IA criará um protocolo pedagógico completo</p>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <div class="form-card" id="formCard">
+        <form id="protocolForm">
+            <div class="form-group">
+                <label for="autor">👤 Nome do Autor / Professor</label>
+                <input type="text" id="autor" placeholder="Ex: Maria Silva" required>
+            </div>
+
+            <fieldset>
+                <legend>📚 Anos Letivos</legend>
+                
+                <h4 style="color: #0066cc; font-size: 0.95rem; margin-bottom: 0.8rem;">🎨 Pré-escolar</h4>
+                <div class="checkbox-grid" style="margin-bottom: 1.5rem;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="Pré-escolar">
+                        <span>Pré-escolar</span>
+                    </label>
+                </div>
+
+                <h4 style="color: #0066cc; font-size: 0.95rem; margin-bottom: 0.8rem;">📚 1º Ciclo</h4>
+                <div class="checkbox-grid" style="margin-bottom: 1.5rem;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="1º">
+                        <span>1º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="2º">
+                        <span>2º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="3º">
+                        <span>3º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="4º">
+                        <span>4º Ano</span>
+                    </label>
+                </div>
+
+                <h4 style="color: #0066cc; font-size: 0.95rem; margin-bottom: 0.8rem;">📖 2º Ciclo</h4>
+                <div class="checkbox-grid" style="margin-bottom: 1.5rem;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="5º">
+                        <span>5º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="6º">
+                        <span>6º Ano</span>
+                    </label>
+                </div>
+
+                <h4 style="color: #0066cc; font-size: 0.95rem; margin-bottom: 0.8rem;">🔬 3º Ciclo</h4>
+                <div class="checkbox-grid" style="margin-bottom: 1.5rem;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="7º">
+                        <span>7º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="8º">
+                        <span>8º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="9º">
+                        <span>9º Ano</span>
+                    </label>
+                </div>
+
+                <h4 style="color: #0066cc; font-size: 0.95rem; margin-bottom: 0.8rem;">🎓 Ensino Secundário</h4>
+                <div class="checkbox-grid">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="10º">
+                        <span>10º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="11º">
+                        <span>11º Ano</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="anos" value="12º">
+                        <span>12º Ano</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>🔬 Disciplinas</legend>
+                <div class="checkbox-grid">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="disciplinas" value="Estudo do Meio">
+                        <span>Estudo do Meio</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="disciplinas" value="Ciências">
+                        <span>Ciências</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="disciplinas" value="Biologia">
+                        <span>Biologia</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="disciplinas" value="Geologia">
+                        <span>Geologia</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="disciplinas" value="Física">
+                        <span>Física</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="disciplinas" value="Química">
+                        <span>Química</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="disciplinas" value="Matemática">
+                        <span>Matemática</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <div class="form-group">
+                <label for="resumo">📝 Descrição da Experiência</label>
+                <textarea id="resumo" placeholder="Descreve detalhadamente a experiência que queres criar. Quanto mais específico, melhor o resultado!" required></textarea>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="gerarProtocolo()" id="btnGerar">
+                🤖 Gerar Protocolo Pedagógico Completo
+            </button>
+        </form>
+    </div>
+
+    <div class="loading-container" id="loadingBox">
+        <div class="spinner"></div>
+        <h3>🤖 A IA está a trabalhar...</h3>
+        <p>A criar protocolo pedagógico completo com objetivos, competências, segurança detalhada e quiz interativo.</p>
+        <p style="color: #666; margin-top: 1rem;">Isto pode demorar 15-30 segundos...</p>
+    </div>
+
+    <div class="review-card" id="reviewCard">
+        <h2>📋 Revê o Protocolo Pedagógico Gerado</h2>
+        
+        <div class="protocol-preview" id="protocolPreview"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-secondary" onclick="aceitarProtocolo()">
+                ✅ Aceitar e Guardar
+            </button>
+            <button class="btn btn-warning" onclick="mostrarFeedback()">
+                🔄 Pedir Ajustes à IA
+            </button>
+            <button class="btn btn-danger" onclick="cancelarRevisao()">
+                ❌ Cancelar
+            </button>
+        </div>
+
+        <div class="feedback-section" id="feedbackSection">
+            <h3>💬 O que queres melhorar?</h3>
+            <p style="color: #666; margin-bottom: 1rem;">
+                Descreve as alterações que gostarias de fazer.
+            </p>
+            <textarea id="feedbackText" placeholder="Ex: Adiciona mais detalhes nos objetivos, torna a segurança mais específica, cria perguntas de quiz mais difíceis..."></textarea>
+            <div class="btn-group">
+                <button class="btn btn-warning" onclick="regenerarProtocolo()">
+                    🔄 Regenerar com Ajustes
+                </button>
+                <button class="btn btn-danger" onclick="esconderFeedback()">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Portal de Protocolos Experimentais</strong></p>
+        <p>Projeto Clubes de Ciência Viva | Agrupamento de Escolas Monte da Lua</p>
+        <div class="developer">
+            <p><strong>Desenvolvido por:</strong> Rodrigo Anacleto</p>
+            <p><a href="mailto:rodrigo.anacleto@agml.pt">rodrigo.anacleto@agml.pt</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+let protocoloAtual = null;
+
+function mostrarAlert(mensagem, tipo) {
+    const alert = document.getElementById('alertBox');
+    alert.textContent = mensagem;
+    alert.className = `alert alert-${tipo} active`;
+    setTimeout(() => alert.classList.remove('active'), 5000);
+}
+
+async function gerarProtocolo() {
+    const autor = document.getElementById('autor').value.trim();
+    const anos = Array.from(document.querySelectorAll('input[name="anos"]:checked')).map(e => e.value);
+    const disciplinas = Array.from(document.querySelectorAll('input[name="disciplinas"]:checked')).map(e => e.value);
+    const resumo = document.getElementById('resumo').value.trim();
+
+    if (!autor || anos.length === 0 || disciplinas.length === 0 || !resumo) {
+        mostrarAlert('❌ Por favor, preenche todos os campos', 'error');
+        return;
+    }
+
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('reviewCard').classList.remove('active');
+    document.getElementById('loadingBox').classList.add('active');
+    document.getElementById('btnGerar').disabled = true;
+
+    try {
+        const response = await fetch('/generate_protocol', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ autor, anos, disciplinas, resumo })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            protocoloAtual = data.protocolo;
+            mostrarRevisao(protocoloAtual);
+        } else {
+            mostrarAlert('❌ Erro ao gerar protocolo. Tenta novamente.', 'error');
+            document.getElementById('formCard').style.display = 'block';
+        }
+    } catch (error) {
+        mostrarAlert('❌ Erro de ligação. Verifica se o servidor está a correr.', 'error');
+        document.getElementById('formCard').style.display = 'block';
+    } finally {
+        document.getElementById('loadingBox').classList.remove('active');
+        document.getElementById('btnGerar').disabled = false;
+    }
+}
+
+function mostrarRevisao(protocolo) {
+    let html = `
+        <div class="preview-section">
+            <h3>${protocolo.titulo || '(Sem título)'}</h3>
+            ${protocolo.subtitulo ? `<p style="color: #0066cc; font-weight: 500;">${protocolo.subtitulo}</p>` : ''}
+            ${protocolo.duracao ? `<p><strong>⏱️ Duração:</strong> ${protocolo.duracao}</p>` : ''}
+        </div>
+    `;
+
+    if (protocolo.competencias && protocolo.competencias.length > 0) {
+        html += `
+        <div class="preview-section">
+            <h4>🎯 Competências</h4>
+            <ul>${protocolo.competencias.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>
+        `;
+    }
+
+    if (protocolo.objetivos && protocolo.objetivos.length > 0) {
+        html += `
+        <div class="preview-section">
+            <h4>📌 Objetivos de Aprendizagem</h4>
+            <ul>${protocolo.objetivos.map(o => `<li>${o}</li>`).join('')}</ul>
+        </div>
+        `;
+    }
+
+    if (protocolo.contextualizacao) {
+        html += `
+        <div class="preview-section">
+            <h4>🌍 Contextualização</h4>
+            <p>${protocolo.contextualizacao}</p>
+        </div>
+        `;
+    }
+
+    html += `
+        <div class="preview-section">
+            <h4>🧪 Materiais</h4>
+            <p>${protocolo.materiais || 'Sem materiais'}</p>
+        </div>
+    `;
+
+    if (protocolo.pre_experiencia) {
+        html += `
+        <div class="preview-section">
+            <h4>🤔 Antes da Experiência</h4>
+            <p>${protocolo.pre_experiencia}</p>
+        </div>
+        `;
+    }
+
+    html += `
+        <div class="preview-section">
+            <h4>📋 Procedimento</h4>
+            <p>${protocolo.procedimento || protocolo.passos || 'Sem procedimento'}</p>
+        </div>
+    `;
+
+    if (protocolo.seguranca) {
+        const seg = protocolo.seguranca;
+        html += `
+        <div class="security-preview">
+            <h4>⚠️ Segurança</h4>
+            ${seg.nivel_risco ? `<p><strong>Nível de Risco:</strong> ${seg.nivel_risco}</p>` : ''}
+            ${seg.riscos ? `<p><strong>Riscos:</strong> ${seg.riscos}</p>` : ''}
+            ${seg.epi ? `<p><strong>Equipamento:</strong> ${seg.epi}</p>` : ''}
+        </div>
+        `;
+    }
+
+    if (protocolo.quiz && protocolo.quiz.length > 0) {
+        html += `
+        <div class="preview-section">
+            <h4>❓ Quiz (${protocolo.quiz.length} perguntas)</h4>
+            <p>Quiz interativo criado com ${protocolo.quiz.length} perguntas variadas.</p>
+        </div>
+        `;
+    }
+    
+    document.getElementById('protocolPreview').innerHTML = html;
+    document.getElementById('reviewCard').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function mostrarFeedback() {
+    document.getElementById('feedbackSection').classList.add('active');
+}
+
+function esconderFeedback() {
+    document.getElementById('feedbackSection').classList.remove('active');
+    document.getElementById('feedbackText').value = '';
+}
+
+async function regenerarProtocolo() {
+    const feedback = document.getElementById('feedbackText').value.trim();
+    
+    if (!feedback) {
+        mostrarAlert('❌ Escreve o que queres melhorar', 'error');
+        return;
+    }
+
+    document.getElementById('reviewCard').classList.remove('active');
+    document.getElementById('loadingBox').classList.add('active');
+    esconderFeedback();
+
+    try {
+        const response = await fetch('/regenerate_protocol', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                protocolo_anterior: protocoloAtual,
+                feedback: feedback
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            protocoloAtual = data.protocolo;
+            mostrarRevisao(protocoloAtual);
+        } else {
+            mostrarAlert('❌ Erro ao regenerar protocolo.', 'error');
+        }
+    } catch (error) {
+        mostrarAlert('❌ Erro de ligação.', 'error');
+    } finally {
+        document.getElementById('loadingBox').classList.remove('active');
+    }
+}
+
+async function aceitarProtocolo() {
+    document.getElementById('reviewCard').classList.remove('active');
+    document.getElementById('loadingBox').classList.add('active');
+
+    try {
+        const response = await fetch('/save_protocol', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ protocolo: protocoloAtual })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            mostrarAlert('✅ Protocolo guardado! A redirecionar...', 'success');
+            setTimeout(() => {
+                window.location.href = `/protocolo/${data.id}`;
+            }, 2000);
+        } else {
+            mostrarAlert('❌ Erro ao guardar protocolo.', 'error');
+        }
+    } catch (error) {
+        mostrarAlert('❌ Erro de ligação.', 'error');
+    } finally {
+        document.getElementById('loadingBox').classList.remove('active');
+    }
+}
+
+function cancelarRevisao() {
+    if (confirm('❌ Tens a certeza? O protocolo gerado será perdido.')) {
+        document.getElementById('reviewCard').classList.remove('active');
+        document.getElementById('formCard').style.display = 'block';
+        document.getElementById('protocolForm').reset();
+        protocoloAtual = null;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+</script>
+</body>
+</html>

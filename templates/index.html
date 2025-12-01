@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Protocolos Experimentais - Clubes de Ciência Viva</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Melhorado */
+        header { 
+            background: linear-gradient(135deg, #004080 0%, #0066cc 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        header img { 
+            height: 70px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .portal-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portal-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .portal-title .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        nav { display: flex; gap: 1.5rem; align-items: center; }
+        
+        nav a { 
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover { 
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Stats */
+        .dashboard {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid #0066cc;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #004080;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            color: #004080;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00a86b 0%, #008f5a 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,168,107,0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #0066cc 0%, #004080 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,102,204,0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            color: #004080;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid #0066cc;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h4 {
+            color: #004080;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step-counter;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, #0066cc 0%, #004080 100%);
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .step h4 {
+            color: #004080;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Tips List */
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #00a86b;
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .tips-list li::before {
+            content: "💡";
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* Feature Box */
+        .feature-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #0066cc;
+        }
+
+        .feature-box strong {
+            color: #004080;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .footer p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer .developer {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .footer .developer strong {
+            color: #004080;
+        }
+
+        .footer a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #004080;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .logo-section { flex-direction: column; }
+            .portal-title { align-items: center; }
+            .hero h2 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .section { padding: 1.5rem; }
+            .step { padding-left: 3rem; }
+            .step::before { width: 2rem; height: 2rem; font-size: 1rem; }
+            .dashboard { padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="https://agmlbk1.essmaria.info/images/nicepage-images/cd6b804503262f5647d4992a9c6f0ac82.png" alt="Logotipo AGML">
+                <div class="portal-title">
+                    <h1>Portal Ciência Viva</h1>
+                    <span class="subtitle">Protocolos Experimentais</span>
+                </div>
+            </div>
+            <nav>
+                <a href="{{ url_for('index') }}">🏠 Início</a>
+                <a href="{{ url_for('gerar') }}">✨ Gerar Protocolo</a>
+                <a href="{{ url_for('consultar') }}">📚 Consultar</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard de Estatísticas -->
+    <div class="dashboard">
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-number" id="totalProtocolos">-</div>
+                <div class="stat-label">Protocolos Criados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-number" id="totalViews">-</div>
+                <div class="stat-label">Visualizações</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔬</div>
+                <div class="stat-number" id="totalDisciplinas">-</div>
+                <div class="stat-label">Disciplinas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-number" id="maisPopular">-</div>
+                <div class="stat-label">Protocolo Mais Popular</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>Bem-vindo ao Portal de Protocolos Experimentais</h2>
+            <p>Cria protocolos educativos com apoio de Inteligência Artificial para o Projeto Clubes de Ciência Viva</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('gerar') }}" class="btn btn-primary">
+                    ✨ Gerar Novo Protocolo
+                </a>
+                <a href="{{ url_for('consultar') }}" class="btn btn-secondary">
+                    📚 Explorar Protocolos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Como Funciona -->
+        <section class="section">
+            <h2>🎯 Como Funciona</h2>
+            <div class="steps">
+                <div class="step">
+                    <h4>Descreve a tua ideia</h4>
+                    <p>Indica o tema da experiência, anos letivos e disciplinas. Quanto mais detalhes deres, melhor será o resultado!</p>
+                </div>
+                <div class="step">
+                    <h4>A IA gera o protocolo</h4>
+                    <p>A nossa inteligência artificial cria um protocolo completo com materiais, passos detalhados, quiz educativo e <strong>análise de segurança automática</strong>.</p>
+                </div>
+                <div class="step">
+                    <h4>Revê e ajusta</h4>
+                    <p>Podes pedir ajustes à IA quantas vezes precisares. Adiciona detalhes, simplifica ou melhora qualquer secção.</p>
+                </div>
+                <div class="step">
+                    <h4>Guarda e partilha</h4>
+                    <p>Quando estiveres satisfeito, guarda o protocolo. Podes imprimir em PDF, partilhar via QR Code ou avaliar.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Funcionalidades -->
+        <section class="section">
+            <h2>⚡ Funcionalidades</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🤖</div>
+                    <h4>IA Avançada</h4>
+                    <p>Usa tecnologia Llama 3.3 para gerar protocolos educativos detalhados e pedagogicamente sólidos.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚠️</div>
+                    <h4>Análise de Segurança</h4>
+                    <p>A IA identifica riscos, sugere equipamento de proteção e indica cuidados específicos automaticamente.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔄</div>
+                    <h4>Revisão Iterativa</h4>
+                    <p>Pede melhorias e ajustes quantas vezes precisares antes de guardar o protocolo final.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📱</div>
+                    <h4>QR Code</h4>
+                    <p>Cada protocolo gera um QR Code automático para acesso rápido via telemóvel ou impressão.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👍</div>
+                    <h4>Sistema de Avaliações</h4>
+                    <p>Avalia protocolos com gostos/não gostos e vê os mais populares da comunidade.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h4>Dashboard de Estatísticas</h4>
+                    <p>Acompanha o crescimento da biblioteca com estatísticas em tempo real.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dicas para Melhores Resultados -->
+        <section class="section">
+            <h2>💡 Dicas para Melhores Resultados</h2>
+            <ul class="tips-list">
+                <li>
+                    <div>
+                        <strong>Sê específico na descrição:</strong> Em vez de "experiência de química", escreve "experiência para demonstrar reações ácido-base usando vinagre e bicarbonato de sódio".
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Indica o contexto:</strong> Menciona se é para demonstração, trabalho prático, projeto ou avaliação.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Define o nível de dificuldade:</strong> Especifica se queres algo simples e rápido ou mais complexo e detalhado.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Menciona recursos disponíveis:</strong> Se tens materiais específicos ou limitações (ex: "sem usar equipamento de laboratório"), indica isso.
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <strong>Usa a revisão iterativa:</strong> Não hesites em pedir ajustes. A IA aprende com o teu feedback e melhora o protocolo.
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Sobre a IA -->
+        <section class="section">
+            <h2>🧠 Sobre a Tecnologia</h2>
+            <div class="feature-box">
+                <p><strong>Modelo de IA:</strong> Llama 3.3 70B (via Groq API)</p>
+                <p style="margin-top: 0.5rem; color: #666;">
+                    Este portal utiliza um dos modelos de linguagem mais avançados do mundo, especializado em conteúdo educativo. 
+                    A IA foi treinada para criar protocolos experimentais pedagogicamente adequados, seguros e alinhados com 
+                    o currículo português do ensino básico.
+                </p>
+            </div>
+            <p style="color: #666; margin-top: 1rem;">
+                <strong>Nota importante:</strong> Embora a IA seja muito capaz e inclua análise de segurança automática, recomendamos sempre que os protocolos sejam revistos 
+                por um professor antes da utilização em contexto de sala de aula.
+            </p>
+        </section>
+
+        <!-- Sobre o Projeto -->
+        <section class="section">
+            <h2>📖 Sobre o Projeto</h2>
+            <p>
+                O Portal de Protocolos Experimentais foi desenvolvido no âmbito do <strong>Projeto Clubes de Ciência Viva</strong> 
+                do <strong>Agrupamento de Escolas Monte da Lua</strong>, com o objetivo de apoiar professores e alunos na criação e partilha 
+                de experiências científicas de qualidade.
+            </p>
+            <p style="margin-top: 1rem;">
+                A integração de Inteligência Artificial permite democratizar o acesso a recursos educativos de qualidade, 
+                reduzindo o tempo de preparação e estimulando a criatividade e experimentação científica.
+            </p>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p><strong>Portal de Protocolos Experimentais</strong></p>
+        <p>Projeto Clubes de Ciência Viva | Agrupamento de Escolas Monte da Lua</p>
+        <div class="developer">
+            <p><strong>Desenvolvido por:</strong> Rodrigo Anacleto</p>
+            <p><a href="mailto:rodrigo.anacleto@agml.pt">rodrigo.anacleto@agml.pt</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Carregar estatísticas
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                
+                document.getElementById('totalProtocolos').textContent = data.total_protocolos;
+                document.getElementById('totalViews').textContent = data.total_visualizacoes;
+                document.getElementById('totalDisciplinas').textContent = data.por_disciplina.length;
+                
+                if (data.mais_populares.length > 0) {
+                    const top = data.mais_populares[0];
+                    document.getElementById('maisPopular').innerHTML = `
+                        <span style="font-size: 0.6em; display: block;">${top.titulo.substring(0, 20)}...</span>
+                    `;
+                } else {
+                    document.getElementById('maisPopular').textContent = '0';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
+
+        // Carregar ao iniciar
+        loadStats();
+    </script>
+</body>
+</html>

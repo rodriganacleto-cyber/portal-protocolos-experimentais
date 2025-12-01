@@ -1,0 +1,6 @@
+Flask
+gunicorn
+groq
+python-dotenv
+qrcode[pil]
+Pillow

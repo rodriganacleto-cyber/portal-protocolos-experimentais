@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ protocolo.titulo or 'Protocolo Experimental' }}</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); color: #333; line-height: 1.6; }
+header { background: linear-gradient(135deg, #004080 0%, #0066cc 100%); color: white; padding: 1.5rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+.header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+.logo-section { display: flex; align-items: center; gap: 1.5rem; }
+header img { height: 70px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+.portal-title { display: flex; flex-direction: column; }
+.portal-title h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.5px; }
+.portal-title .subtitle { font-size: 0.9rem; opacity: 0.9; }
+nav { display: flex; gap: 1.5rem; align-items: center; }
+nav a { color: white; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 5px; transition: all 0.3s ease; }
+nav a:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+.container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+.print-header { display: none; }
+.protocol-wrapper { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; }
+.protocol-title-section { background: linear-gradient(135deg, #004080 0%, #0066cc 100%); color: white; padding: 2.5rem; text-align: center; }
+.protocol-title-section h2 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+.protocol-subtitle { font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem; }
+.protocol-meta-header { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; font-size: 0.95rem; flex-wrap: wrap; }
+.meta-info-bar { background: #f8f9fa; padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; border-bottom: 2px solid #e9ecef; }
+.meta-info-item { text-align: center; }
+.meta-info-item strong { display: block; color: #004080; font-size: 0.85rem; margin-bottom: 0.3rem; }
+.meta-info-item span { color: #666; font-size: 0.95rem; }
+.qr-section { background: white; padding: 1.5rem; text-align: center; border-bottom: 2px solid #e9ecef; }
+.qr-section h3 { color: #004080; font-size: 1.1rem; margin-bottom: 1rem; }
+.qr-section img { max-width: 150px; border: 3px solid #e9ecef; border-radius: 8px; }
+.ratings-display { display: flex; gap: 2rem; justify-content: center; padding: 1.5rem; background: #f8f9fa; border-bottom: 2px solid #e9ecef; }
+.rating-item { display: flex; align-items: center; gap: 0.8rem; font-size: 1.1rem; }
+.rating-icon { font-size: 1.8rem; }
+.rating-count { font-weight: 700; color: #004080; }
+.protocol-content { padding: 2.5rem; }
+.protocol-section { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 2px solid #e9ecef; }
+.protocol-section:last-of-type { border-bottom: none; }
+.protocol-section h3 { color: #004080; font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.protocol-section p, .protocol-section ul { color: #333; font-size: 1rem; line-height: 1.8; white-space: pre-line; }
+.badges-list { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.8rem; }
+.badge-item { background: #e3f2fd; color: #0066cc; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 500; }
+.security-section { background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%); border: 3px solid #ffc107; border-radius: 10px; padding: 2rem; margin-bottom: 2.5rem; }
+.security-section h3 { color: #d63031; font-size: 1.6rem; margin-bottom: 1.5rem; }
+.security-grid { display: grid; gap: 1.5rem; }
+.security-item h4 { color: #d63031; font-size: 1.1rem; margin-bottom: 0.5rem; }
+.risk-badge { display: inline-block; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 1rem; }
+.risk-baixo { background: #d4edda; color: #155724; }
+.risk-medio { background: #fff3cd; color: #856404; }
+.risk-alto { background: #f8d7da; color: #721c24; }
+.quiz-interactive { background: #e3f2fd; border-radius: 10px; padding: 2rem; }
+.quiz-question { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.quiz-question h4 { color: #004080; margin-bottom: 1rem; font-size: 1.1rem; }
+.quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+.quiz-option { padding: 0.8rem; border: 2px solid #e9ecef; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; }
+.quiz-option:hover { background: #f8f9fa; border-color: #0066cc; }
+.quiz-option.selected { background: #e3f2fd; border-color: #0066cc; }
+.quiz-option.correct { background: #d4edda; border-color: #28a745; }
+.quiz-option.incorrect { background: #f8d7da; border-color: #dc3545; }
+.quiz-feedback { margin-top: 1rem; padding: 1rem; border-radius: 6px; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct-feedback { background: #d4edda; color: #155724; }
+.quiz-feedback.incorrect-feedback { background: #f8d7da; color: #721c24; }
+.quiz-score { text-align: center; padding: 1.5rem; background: white; border-radius: 8px; margin-top: 1.5rem; font-size: 1.2rem; font-weight: 700; color: #004080; }
+.diferenciacao-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+.diferenciacao-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0066cc; }
+.diferenciacao-card h4 { color: #004080; margin-bottom: 1rem; font-size: 1.1rem; }
+.diferenciacao-card ul { list-style: none; padding: 0; }
+.diferenciacao-card li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+.diferenciacao-card li::before { content: "→"; position: absolute; left: 0; color: #0066cc; font-weight: bold; }
+.actions-bar { padding: 2rem 2.5rem; background: #f8f9fa; border-top: 2px solid #e9ecef; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.btn { padding: 0.9rem 2rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary { background: linear-gradient(135deg, #0066cc 0%, #004080 100%); color: white; }
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,102,204,0.3); }
+.btn-success { background: linear-gradient(135deg, #00a86b 0%, #008f5a 100%); color: white; }
+.btn-success:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,168,107,0.3); }
+.btn-danger { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; }
+.btn-danger:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(220,53,69,0.3); }
+.footer { background: white; border-radius: 12px; padding: 2rem; margin: 2rem auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+.footer p { color: #666; margin-bottom: 0.5rem; font-size: 0.9rem; }
+.footer .developer { margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #e9ecef; }
+.footer a { color: #0066cc; text-decoration: none; }
+@media print { body { background: white; } header, .actions-bar, nav, .ratings-display, .quiz-interactive { display: none !important; } .print-header { display: block !important; text-align: center; padding-bottom: 1.5rem; border-bottom: 3px solid #004080; margin-bottom: 2rem; } .print-header img { height: 60px; } .container { max-width: 100%; margin: 0; padding: 2rem; } .protocol-wrapper { box-shadow: none; } .protocol-title-section { background: white !important; color: #004080 !important; padding: 1.5rem 0; } * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }
+@media (max-width: 768px) { .container { padding: 1rem; } .protocol-content { padding: 1.5rem; } .diferenciacao-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+<div class="header-content">
+<div class="logo-section">
+<img src="https://agmlbk1.essmaria.info/images/nicepage-images/cd6b804503262f5647d4992a9c6f0ac82.png" alt="Logo">
+<div class="portal-title">
+<h1>Portal Ciência Viva</h1>
+<span class="subtitle">Protocolos Experimentais</span>
+</div>
+</div>
+<nav>
+<a href="{{ url_for('index') }}">🏠 Início</a>
+<a href="{{ url_for('gerar') }}">✨ Gerar</a>
+<a href="{{ url_for('consultar') }}">📚 Consultar</a>
+</nav>
+</div>
+</header>
+
+<div class="container">
+<div class="print-header">
+<img src="https://agmlbk1.essmaria.info/images/nicepage-images/cd6b804503262f5647d4992a9c6f0ac82.png" alt="Logo">
+<h2>Agrupamento de Escolas Monte da Lua</h2>
+<p>Projeto Clubes de Ciência Viva</p>
+</div>
+
+<div class="protocol-wrapper">
+<div class="protocol-title-section">
+<h2>{{ protocolo.titulo or 'Sem Título' }}</h2>
+{% if protocolo.subtitulo %}<p class="protocol-subtitle">{{ protocolo.subtitulo }}</p>{% endif %}
+<div class="protocol-meta-header">
+<span>👤 {{ protocolo.autor }}</span>
+<span>📚 {{ ', '.join(protocolo.anos) }}</span>
+<span>🔬 {{ ', '.join(protocolo.disciplinas) }}</span>
+</div>
+</div>
+
+<div class="meta-info-bar">
+{% if protocolo.duracao %}<div class="meta-info-item"><strong>⏱️ Duração</strong><span>{{ protocolo.duracao }}</span></div>{% endif %}
+<div class="meta-info-item"><strong>👁️ Views</strong><span>{{ protocolo.visualizacoes or 0 }}</span></div>
+<div class="meta-info-item"><strong>👍 Gostos</strong><span id="gostosCount">{{ protocolo.gostos or 0 }}</span></div>
+{% if protocolo.seguranca and protocolo.seguranca.nivel_risco %}<div class="meta-info-item"><strong>⚠️ Risco</strong><span>{{ protocolo.seguranca.nivel_risco }}</span></div>{% endif %}
+</div>
+
+<div class="qr-section">
+<h3>📱 Acesso Rápido</h3>
+<img src="{{ protocolo.qr_code }}" alt="QR">
+<p>Digitaliza para aceder</p>
+</div>
+
+<div class="protocol-content">
+{% if protocolo.competencias or protocolo.objetivos %}
+<div class="protocol-section">
+<h3>🎯 Competências e Objetivos</h3>
+{% if protocolo.competencias %}
+<h4 style="color:#0066cc;margin-top:1rem;">Competências:</h4>
+<div class="badges-list">
+{% for comp in protocolo.competencias.split('\n') if comp %}<span class="badge-item">{{ comp }}</span>{% endfor %}
+</div>
+{% endif %}
+{% if protocolo.objetivos %}
+<h4 style="color:#0066cc;margin-top:1.5rem;">Objetivos:</h4>
+<ul style="list-style:none;padding:0;">
+{% for obj in protocolo.objetivos.split('\n') if obj %}<li style="padding:0.3rem 0 0 1.5rem;position:relative;"><span style="position:absolute;left:0;color:#0066cc;">✓</span>{{ obj }}</li>{% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endif %}
+
+{% if protocolo.contextualizacao %}
+<div class="protocol-section">
+<h3>🌍 Contextualização</h3>
+<p>{{ protocolo.contextualizacao }}</p>
+</div>
+{% endif %}
+
+<div class="protocol-section">
+<h3>🧪 Materiais</h3>
+<p>{{ protocolo.materiais or 'Sem materiais' }}</p>
+</div>
+
+{% if protocolo.pre_experiencia %}
+<div class="protocol-section">
+<h3>🤔 Antes da Experiência</h3>
+<p>{{ protocolo.pre_experiencia }}</p>
+</div>
+{% endif %}
+
+<div class="protocol-section">
+<h3>📋 Procedimento</h3>
+<p>{{ protocolo.procedimento or protocolo.passos or 'Sem procedimento' }}</p>
+</div>
+
+{% if protocolo.pos_experiencia %}
+<div class="protocol-section">
+<h3>💬 Depois da Experiência</h3>
+<p>{{ protocolo.pos_experiencia }}</p>
+</div>
+{% endif %}
+
+{% if protocolo.resultados_esperados %}
+<div class="protocol-section">
+<h3>🔍 Resultados Esperados</h3>
+<p>{{ protocolo.resultados_esperados }}</p>
+</div>
+{% endif %}
+
+{% if protocolo.seguranca %}
+<div class="security-section">
+<h3>⚠️ Segurança</h3>
+{% if protocolo.seguranca.nivel_risco %}
+<div style="margin-bottom:1.5rem;">
+<strong>Nível de Risco:</strong>
+<span class="risk-badge risk-{{ protocolo.seguranca.nivel_risco.lower() }}">{{ protocolo.seguranca.nivel_risco }}</span>
+</div>
+{% endif %}
+<div class="security-grid">
+{% if protocolo.seguranca.riscos %}<div class="security-item"><h4>⚠️ Riscos:</h4><p>{{ protocolo.seguranca.riscos }}</p></div>{% endif %}
+{% if protocolo.seguranca.epi %}<div class="security-item"><h4>🛡️ Equipamento:</h4><p>{{ protocolo.seguranca.epi }}</p></div>{% endif %}
+{% if protocolo.seguranca.supervisao %}<div class="security-item"><h4>👥 Supervisão:</h4><p>{{ protocolo.seguranca.supervisao }}</p></div>{% endif %}
+{% if protocolo.seguranca.cuidados %}<div class="security-item"><h4>✅ Cuidados:</h4><p>{{ protocolo.seguranca.cuidados }}</p></div>{% endif %}
+{% if protocolo.seguranca.primeiros_socorros %}<div class="security-item"><h4>🚨 Primeiros Socorros:</h4><p>{{ protocolo.seguranca.primeiros_socorros }}</p></div>{% endif %}
+{% if protocolo.seguranca.descarte %}<div class="security-item"><h4>♻️ Descarte:</h4><p>{{ protocolo.seguranca.descarte }}</p></div>{% endif %}
+</div>
+</div>
+{% endif %}
+
+{% if protocolo.quiz and protocolo.quiz|length > 0 %}
+<div class="protocol-section">
+<h3>❓ Quiz de Avaliação</h3>
+<div class="quiz-interactive" id="quizContainer"></div>
+<div class="quiz-score" id="quizScore" style="display:none;"></div>
+</div>
+{% endif %}
+
+{% if protocolo.diferenciacao %}
+<div class="protocol-section">
+<h3>🎓 Diferenciação Pedagógica</h3>
+<div class="diferenciacao-grid">
+{% if protocolo.diferenciacao.simplificacao and protocolo.diferenciacao.simplificacao|length > 0 %}
+<div class="diferenciacao-card">
+<h4>🔽 Simplificação</h4>
+<ul>{% for item in protocolo.diferenciacao.simplificacao %}<li>{{ item }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+{% if protocolo.diferenciacao.aprofundamento and protocolo.diferenciacao.aprofundamento|length > 0 %}
+<div class="diferenciacao-card">
+<h4>🔼 Aprofundamento</h4>
+<ul>{% for item in protocolo.diferenciacao.aprofundamento %}<li>{{ item }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+{% if protocolo.diferenciacao.inclusao and protocolo.diferenciacao.inclusao|length > 0 %}
+<div class="diferenciacao-card">
+<h4>♿ Inclusão</h4>
+<ul>{% for item in protocolo.diferenciacao.inclusao %}<li>{{ item }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+</div>
+</div>
+{% endif %}
+
+{% if protocolo.recursos_extras %}
+<div class="protocol-section">
+<h3>📚 Recursos Complementares</h3>
+<ul>{% for recurso in protocolo.recursos_extras.split('\n') if recurso %}<li>{{ recurso }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+</div>
+
+<div class="actions-bar">
+<button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir/PDF</button>
+<button class="btn btn-success" onclick="avaliarProtocolo('gosto')" id="btnGosto">👍 Gosto</button>
+<button class="btn btn-danger" onclick="avaliarProtocolo('nao_gosto')" id="btnNaoGosto">👎 Não Gosto</button>
+</div>
+</div>
+
+<div class="footer">
+<p><strong>Portal de Protocolos Experimentais</strong></p>
+<p>Projeto Clubes de Ciência Viva | Agrupamento de Escolas Monte da Lua</p>
+<div class="developer">
+<p><strong>Desenvolvido por:</strong> Rodrigo Anacleto</p>
+<p><a href="mailto:rodrigo.anacleto@agml.pt">rodrigo.anacleto@agml.pt</a></p>
+</div>
+</div>
+</div>
+
+<script>
+const protocoloId = {{ protocolo.id }};
+let jaVotou = sessionStorage.getItem('votou_' + protocoloId);
+const quizData = {{ protocolo.quiz|tojson|safe }};
+let currentAnswers = {};
+let quizScore = 0;
+
+if (quizData && quizData.length > 0) { renderQuiz(); }
+
+function renderQuiz() {
+const container = document.getElementById('quizContainer');
+let html = '';
+quizData.forEach((q, index) => {
+html += `<div class="quiz-question" id="question${index}">`;
+if (q.tipo === 'multipla_escolha') {
+html += `<h4>Questão ${index + 1}: ${q.pergunta}</h4><div class="quiz-options">`;
+q.opcoes.forEach((opcao) => {
+html += `<div class="quiz-option" onclick="selectOption(${index}, '${opcao.charAt(0)}', this)">${opcao}</div>`;
+});
+html += `</div><button class="btn btn-primary" style="margin-top:1rem;" onclick="checkAnswer(${index}, '${q.resposta_correta}', 'multipla')">Verificar</button>`;
+html += `<div class="quiz-feedback" id="feedback${index}"></div>`;
+} else if (q.tipo === 'verdadeiro_falso') {
+html += `<h4>Questão ${index + 1}: V ou F?</h4><p>${q.afirmacao}</p><div class="quiz-options">`;
+html += `<div class="quiz-option" onclick="selectOption(${index}, true, this)">Verdadeiro</div>`;
+html += `<div class="quiz-option" onclick="selectOption(${index}, false, this)">Falso</div>`;
+html += `</div><button class="btn btn-primary" style="margin-top:1rem;" onclick="checkAnswer(${index}, ${q.resposta_correta}, 'vf')">Verificar</button>`;
+html += `<div class="quiz-feedback" id="feedback${index}"></div>`;
+} else if (q.tipo === 'aberta') {
+html += `<h4>Questão ${index + 1}: ${q.pergunta}</h4>`;
+html += `<p style="font-style:italic;color:#666;">Questão de reflexão.</p>`;
+html += `<button class="btn btn-primary" style="margin-top:1rem;" onclick="showOpenAnswer(${index})">Ver Resposta Sugerida</button>`;
+html += `<div class="quiz-feedback" id="feedback${index}" style="display:none;"><strong>Resposta:</strong><br>${q.resposta_sugerida}</div>`;
+}
+html += `</div>`;
+});
+container.innerHTML = html;
+}
+
+function selectOption(questionIndex, answer, element) {
+const siblings = element.parentElement.querySelectorAll('.quiz-option');
+siblings.forEach(s => s.classList.remove('selected'));
+element.classList.add('selected');
+currentAnswers[questionIndex] = answer;
+}
+
+function checkAnswer(questionIndex, correctAnswer, type) {
+const userAnswer = currentAnswers[questionIndex];
+const feedback = document.getElementById(`feedback${questionIndex}`);
+const question = quizData[questionIndex];
+
+if (!userAnswer && userAnswer !== false) {
+alert('Por favor, seleciona uma resposta primeiro!');
+return;
+}
+
+let isCorrect = false;
+
+if (type === 'multipla') {
+isCorrect = userAnswer === correctAnswer;
+} else if (type === 'vf') {
+isCorrect = userAnswer === correctAnswer;
+}
+
+const options = document.querySelectorAll(`#question${questionIndex} .quiz-option`);
+options.forEach(opt => {
+opt.style.pointerEvents = 'none';
+if (type === 'multipla') {
+if (opt.textContent.trim().startsWith(correctAnswer)) {
+opt.classList.add('correct');
+} else if (opt.classList.contains('selected')) {
+opt.classList.add('incorrect');
+}
+} else if (type === 'vf') {
+const isTrue = opt.textContent.includes('Verdadeiro');
+if ((isTrue && correctAnswer) || (!isTrue && !correctAnswer)) {
+opt.classList.add('correct');
+} else if (opt.classList.contains('selected')) {
+opt.classList.add('incorrect');
+}
+}
+});
+
+if (isCorrect) {
+feedback.className = 'quiz-feedback correct-feedback show';
+feedback.innerHTML = `✅ <strong>Correto!</strong><br>${question.explicacao || ''}`;
+quizScore++;
+} else {
+feedback.className = 'quiz-feedback incorrect-feedback show';
+feedback.innerHTML = `❌ <strong>Incorreto.</strong> Resposta: ${correctAnswer}<br>${question.explicacao || ''}`;
+}
+
+event.target.style.display = 'none';
+checkQuizComplete();
+}
+
+function showOpenAnswer(questionIndex) {
+const feedback = document.getElementById(`feedback${questionIndex}`);
+feedback.style.display = 'block';
+event.target.style.display = 'none';
+}
+
+function checkQuizComplete() {
+const totalQuestions = quizData.filter(q => q.tipo !== 'aberta').length;
+const answeredQuestions = Object.keys(currentAnswers).length;
+
+if (answeredQuestions >= totalQuestions) {
+const scoreDisplay = document.getElementById('quizScore');
+scoreDisplay.innerHTML = `📊 Pontuação: ${quizScore}/${totalQuestions} (${Math.round((quizScore/totalQuestions)*100)}%)`;
+scoreDisplay.style.display = 'block';
+}
+}
+
+if (jaVotou) {
+document.getElementById('btnGosto').disabled = true;
+document.getElementById('btnNaoGosto').disabled = true;
+}
+
+async function avaliarProtocolo(tipo) {
+if (jaVotou) {
+alert('Já avaliaste este protocolo!');
+return;
+}
+
+try {
+const response = await fetch(`/avaliar_protocolo/${protocoloId}`, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ tipo: tipo })
+});
+
+const data = await response.json();
+
+if (data.status === 'ok') {
+document.getElementById('gostosCount').textContent = data.gostos;
+sessionStorage.setItem('votou_' + protocoloId, 'true');
+jaVotou = true;
+document.getElementById('btnGosto').disabled = true;
+document.getElementById('btnNaoGosto').disabled = true;
+
+alert(tipo === 'gosto' ? '👍 Obrigado!' : '👎 Obrigado pelo feedback!');
+}
+} catch (error) {
+alert('Erro ao registar avaliação.');
+}
+}
+</script>
+</body>
+</html>
