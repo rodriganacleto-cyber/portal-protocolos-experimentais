@@ -48,13 +48,18 @@ def guardar_protocolo(protocolo: dict):
         print("❌ Supabase não inicializado")
         return None
     try:
+        print(f"📤 A enviar para Supabase: {list(protocolo.keys())}")
         response = supabase.table("protocolos").insert(protocolo).execute()
+        print(f"📥 Resposta Supabase: {response}")
         if response.data:
             print(f"✅ Protocolo guardado com ID: {response.data[0]['id']}")
             return response.data[0]["id"]
+        print(f"⚠️ Resposta sem dados: {response}")
         return None
     except Exception as e:
-        print(f"❌ Erro ao guardar protocolo: {e}")
+        print(f"❌ Erro ao guardar protocolo: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 
@@ -285,6 +290,7 @@ def save_protocol():
     protocolo = data.get("protocolo", {})
     
     print(f"💾 A guardar protocolo: {protocolo.get('titulo', '(sem título)')}")
+    print(f"📋 Campos recebidos: {list(protocolo.keys())}")
     
     try:
         # Preparar registo - adaptar aos campos da tua tabela
@@ -292,8 +298,8 @@ def save_protocol():
             "titulo": to_string(protocolo.get("titulo", "")),
             "subtitulo": to_string(protocolo.get("subtitulo", "")),
             "duracao": to_string(protocolo.get("duracao", "")),
-            "competencias": json.dumps(protocolo.get("competencias", [])),
-            "objetivos": json.dumps(protocolo.get("objetivos", [])),
+            "competencias": to_string(protocolo.get("competencias", "")),
+            "objetivos": to_string(protocolo.get("objetivos", "")),
             "contextualizacao": to_string(protocolo.get("contextualizacao", "")),
             "resumo": to_string(protocolo.get("resumo", "")),
             "materiais": to_string(protocolo.get("materiais", "")),
@@ -301,7 +307,9 @@ def save_protocol():
             "procedimento": to_string(protocolo.get("procedimento", "")),
             "pos_experiencia": to_string(protocolo.get("pos_experiencia", "")),
             "resultados_esperados": to_string(protocolo.get("resultados_esperados", "")),
+            "seguranca": json.dumps(protocolo.get("seguranca", {})),
             "seguranca_json": json.dumps(protocolo.get("seguranca", {})),
+            "quiz": json.dumps(protocolo.get("quiz", [])),
             "quiz_json": json.dumps(protocolo.get("quiz", [])),
             "diferenciacao_json": json.dumps(protocolo.get("diferenciacao", {})),
             "recursos_extras": to_string(protocolo.get("recursos_extras", "")),
@@ -313,6 +321,8 @@ def save_protocol():
             "visualizacoes": 0
         }
 
+        print(f"📝 Registo preparado com campos: {list(registro.keys())}")
+        
         protocol_id = guardar_protocolo(registro)
         
         if protocol_id:
