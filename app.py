@@ -619,27 +619,3 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
 ```
-
-**Guarda o ficheiro!**
-
----
-
-## ✅ **RESUMO DAS ALTERAÇÕES:**
-
-Fizeste 3 pequenas correções:
-
-1. ✅ `requirements.txt` → Adicionaste `Pillow`
-2. ✅ `.gitignore` → Adicionaste `*.db`
-3. ✅ `app.py` → Final corrigido para Render
-
----
-
-## 📁 **FICHEIRO 6: Templates**
-
-Confirma que tens estes 4 ficheiros na pasta `templates/`:
-```
-templates/
-├── index.html
-├── gerar_protocolo.html
-├── consultar_protocolos.html
-└── protocolo.html
