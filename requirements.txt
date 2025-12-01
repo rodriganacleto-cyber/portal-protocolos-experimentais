@@ -1,6 +1,7 @@
-Flask
-gunicorn
-groq
-python-dotenv
-qrcode[pil]
-Pillow
+Flask 
+gunicorn 
+groq 
+python-dotenv 
+qrcode[pil] 
+Pillow 
+supabase 
